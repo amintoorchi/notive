@@ -13,59 +13,131 @@
     @apply bg-zinc-100 dark:bg-zinc-800;
 } */
 
+@font-face {
+    font-family: 'YekanBakh-Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: url('../../public/fonts/woff/YekanBakhFaNum-Regular.woff') format('woff'),
+         url('../../public/fonts/woff2/YekanBakhFaNum-Regular.woff2') format('woff2');
+}
+
+* {
+    font-family: 'YekanBakh-Regular', sans-serif !important;
+}
+
+
+
+/*Liquid Glass, Vibe Coded */
+@layer components {
+    .liquid-glass {
+        @apply relative isolate overflow-hidden rounded-2xl;
+        @apply border border-white/40 dark:border-white/[0.12];
+        @apply backdrop-blur-xl backdrop-saturate-150;
+        @apply transition-[background,border-color,box-shadow,transform];
+        background: rgba(255, 255, 255, 0.48);
+
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.08),
+            0 2px 8px rgba(0, 0, 0, 0.04),
+            inset 0 1px 0 rgba(255, 255, 255, 0.75),
+            inset 0 0 0 0.5px rgba(255, 255, 255, 0.25);
+    }
+
+    .dark .liquid-glass {
+        background: rgba(30, 30, 32, 0.48);
+
+        box-shadow:
+            0 12px 40px rgba(0, 0, 0, 0.24),
+            0 2px 8px rgba(0, 0, 0, 0.12),
+            inset 0 1px 0 rgba(255, 255, 255, 0.16),
+            inset 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+    }
+
+    /* Specular light / top reflection */
+    .liquid-glass::before {
+        content: "";
+        @apply pointer-events-none absolute inset-0 rounded-[inherit];
+
+        background:
+            linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.42) 0%,
+                rgba(255, 255, 255, 0.12) 18%,
+                transparent 48%
+            );
+
+        opacity: 0.8;
+    }
+
+    .dark .liquid-glass::before {
+        background:
+            linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0.035) 20%,
+                transparent 55%
+            );
+    }
+
+    /* Glass rim */
+    .liquid-glass::after {
+        content: "";
+        @apply pointer-events-none absolute inset-0 rounded-[inherit];
+
+        border: 1px solid transparent;
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.65),
+                rgba(255, 255, 255, 0.08) 40%,
+                rgba(255, 255, 255, 0.28)
+            ) border-box;
+
+        mask:
+            linear-gradient(#fff 0 0) padding-box,
+            linear-gradient(#fff 0 0) border-box;
+
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+    }
+
+    .dark .liquid-glass::after {
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.22),
+                rgba(255, 255, 255, 0.025) 45%,
+                rgba(255, 255, 255, 0.1)
+            ) border-box;
+    }
+}
+
+
+/* Re-assign Flux's gray of choice... */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-zinc-50: var(--color-neutral-50);
+    --color-zinc-100: var(--color-neutral-100);
+    --color-zinc-200: var(--color-neutral-200);
+    --color-zinc-300: var(--color-neutral-300);
+    --color-zinc-400: var(--color-neutral-400);
+    --color-zinc-500: var(--color-neutral-500);
+    --color-zinc-600: var(--color-neutral-600);
+    --color-zinc-700: var(--color-neutral-700);
+    --color-zinc-800: var(--color-neutral-800);
+    --color-zinc-900: var(--color-neutral-900);
+    --color-zinc-950: var(--color-neutral-950);
+}
 
-    --color-zinc-50: #fafafa;
-    --color-zinc-100: #f5f5f5;
-    --color-zinc-200: #e5e5e5;
-    --color-zinc-300: #d4d4d4;
-    --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
-    --color-zinc-600: #525252;
-    --color-zinc-700: #404040;
-    --color-zinc-800: #262626;
-    --color-zinc-900: #171717;
-    --color-zinc-950: #0a0a0a;
-
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
+@theme {
+    --color-accent: var(--color-blue-600);
+    --color-accent-content: var(--color-blue-600);
     --color-accent-foreground: var(--color-white);
 }
 
 @layer theme {
     .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
+        --color-accent: var(--color-blue-600);
+        --color-accent-content: var(--color-blue-400);
+        --color-accent-foreground: var(--color-white);
     }
 }
-
-@layer base {
-
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
-    }
-}
-
-[data-flux-field]:not(ui-radio, ui-checkbox) {
-    @apply grid gap-2;
-}
-
-[data-flux-label] {
-    @apply  !mb-0 !leading-tight;
-}
-
-input:focus[data-flux-control],
-textarea:focus[data-flux-control],
-select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
-}
-
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
