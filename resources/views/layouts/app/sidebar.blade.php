@@ -1,15 +1,11 @@
-@php
-    $datatime = \Carbon\Carbon::now();
-@endphp
-
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="fa" dir="rtl" class="{{ ($_COOKIE['appearance'] ?? '') === 'dark' ? 'dark' : '' }} bg-apple-bg dark:bg-black">
 
 <head>
     @include('partials.head')
 </head>
 
-<body class="h-screen overflow-hidden rounded-l-2xl bg-zinc-100 dark:bg-zinc-900 font-mono -tracking-wider text-md">
+<body class="h-screen overflow-hidden rounded-rasdasdt-2xl bg-zinc-100 dark:bg-zinc-900 ">
 
     <div class="flex h-screen overflow-hidden">
 
@@ -24,21 +20,25 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
-                <flux:sidebar.item icon="home" href="{{ route('dashboard') }}" wire:navigate wire:current>Dashboard</flux:sidebar.item>
-                <flux:sidebar.group expandable icon="cpu-chip" heading="Manage Servers" class="grid">
-                    <flux:sidebar.item icon="server-stack" href="{{ route('servers') }}" wire:current wire:navigate>Servers</flux:sidebar.item>
+                <!--<flux:sidebar.item icon="home" href="{{ route('dashboard') }}" wire:navigate wire:current>داشبورد</flux:sidebar.item>-->
+                <flux:sidebar.group expandable icon="document" heading="یادداشت ها" class="grid">
+                    <flux:sidebar.item icon="pencil" href="{{ route('note.index') }}" wire:current wire:navigate>یادداشت های من</flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 
             <flux:sidebar.spacer />
 
             <flux:sidebar.nav class="gap-2">
-                <flux:sidebar.item icon="cog-6-tooth" wire:navigate.hover href="{{ route('profile.edit') }}">Settings
+                <flux:sidebar.item icon="cog-6-tooth" wire:navigate.hover href="{{ route('profile.edit') }}">
+                    تنظیمات
+                </flux:sidebar.item>
+                <flux:sidebar.item icon="bug-ant" wire:navigate.hover href="#this-feature-is-not-avalable">
+                    گزارش مشکل
                 </flux:sidebar.item>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <flux:sidebar.item as="button" type="submit" icon="arrow-left-start-on-rectangle" variant="danger" class="w-full">
-                        Sign out
+                        خروج از میزکار
                     </flux:sidebar.item>
                 </form>
             </flux:sidebar.nav>
@@ -49,28 +49,14 @@
             <flux:header class="shrink-0">
                 <flux:sidebar.collapse class="lg:hidden" />
                 <flux:spacer />
-                <flux:dropdown position="bottom" align="start">
-                    <span class="text-xs">
-                        {{ $datatime }}
-                    </span>
-
-                    <flux:navmenu>
-                        <flux:navmenu.item href="{{ route('profile.edit') }}" wire:navigate.hover icon="cog">Settings
-                        </flux:navmenu.item>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <flux:navmenu.item as="button" type="submit" icon="arrow-left-start-on-rectangle" variant="danger"
-                                class="w-full">
-                                Sign out
-                            </flux:navmenu.item>
-                        </form>
-                    </flux:navmenu>
-                </flux:dropdown>
+                @livewire('components.jalali-calendar-modal')
             </flux:header>
 
-            <main class="flex-1 overflow-y-auto rounded-tl-2xl">
+            <main class="flex-1 overflow-y-auto rounded-tr-4xl relative bg-apple-bg dark:bg-black">
                 {{ $slot }}
             </main>
+
+            <x-bottom-nav />
 
         </div>
 
