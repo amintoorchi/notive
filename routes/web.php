@@ -5,20 +5,13 @@ use App\Http\Controllers\ServerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route('note.index');
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
-    Route::livewire('servers', 'pages.servers')->name('servers');
-    Route::livewire('server/{server}', 'pages.server')->name('server');
+    Route::livewire('notes', 'pages.note.index')->name('note.index');
+    Route::livewire('notes/editor/{note?}', 'pages.note.editor')->name('note.editor');
 });
 
-Route::get('/s', [ServerController::class, 'index']);
-
 require __DIR__.'/settings.php';
-
-
-Route::get('/at', [AgentTestController::class, 'test1']);
-Route::get('/at2', [AgentTestController::class, 'test2']);
-Route::get('/at2', [AgentTestController::class, 'test3']);
